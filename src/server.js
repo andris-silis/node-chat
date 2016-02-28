@@ -7,7 +7,8 @@ import { messages, isUserMessageValid } from "./common";
 
 
 function log(...logMessages) {
-    console.log(Date.now(), ...logMessages);
+    const date = Date();
+    console.log(`${date}:`, ...logMessages);
 }
 
 
