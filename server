@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+// scripts are written in ES6 and babel-register is needed
+require("babel-register");
+require("./src/server");
