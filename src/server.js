@@ -107,7 +107,7 @@ function onUserConnection(ioServer, userStorage, userSocket) {
 }
 
 
-function init() {
+function initApp() {
     const port = 13666;
     const userStorage = {};
 
@@ -117,4 +117,4 @@ function init() {
 }
 
 
-init();
+initApp();
