@@ -1,5 +1,5 @@
 import createSocketIO from "socket.io";
-import { partial, some, isInteger } from "lodash";
+import { partial, some, isInteger, isString } from "lodash";
 import yargs from "yargs";
 
 import { IDLE_TIMEOUT } from "./server-config";
@@ -71,7 +71,10 @@ function onUserDisconnect(ioServer, userStorage, user) {
         `User ${user.nickname ? `${user.nickname} ` : ""}`
         + `disconnected${user.timedOut ? " after timeout" : ""}`
     );
-    if (!user.timedOut) {
+    if (!user.timedOut && isString(user.nickname)) {
+        // Don't send disconnected message if user:
+        //  - timed out
+        //  - was disconnected because of nickname conflicts
         ioServer.emit(messages.USER_DISCONNECTED, { nickname: user.nickname });
     }
     removeUserData(userStorage, user);
