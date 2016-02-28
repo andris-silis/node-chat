@@ -1,5 +1,7 @@
 import readline from "readline";
 import createSocketIO from "socket.io-client";
+import commandLineArgs from "command-line-args";
+import { isEmpty } from "lodash";
 
 import { messages } from "./common";
 import { CONNECT_TIMEOUT, RECONNECT_DELAY } from "./client-config";
@@ -93,10 +95,29 @@ function connectReadlineToSocket(rl, socket) {
     rl.prompt();
 }
 
+function getCommandLineParser() {
+    return commandLineArgs([
+        { name: "server-address", alias: "a", type: String },
+        { name: "port", alias: "p", type: String },
+        { name: "nickname", alias: "n", type: String },
+    ]);
+}
+
 function initApp() {
-    const serverPort = 13666;
-    const serverHost = "localhost";
-    const nickname = "andris";
+    const cli = getCommandLineParser();
+    const commandLineParams = cli.parse();
+
+    if (isEmpty(commandLineParams)) {
+        console.log(cli.getUsage());
+        process.exit(0);
+        return;
+    }
+
+    const {
+        "server-address": serverHost,
+        port: serverPort,
+        nickname,
+    } = commandLineParams;
 
     const socket = getSocketConnection(serverHost, serverPort);
     const rl = getReadline();
