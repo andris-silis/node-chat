@@ -1,11 +1,41 @@
 import readline from "readline";
 import createSocketIO from "socket.io-client";
-import commandLineArgs from "command-line-args";
-import { isEmpty } from "lodash";
+import yargs from "yargs";
+import { isInteger, isString } from "lodash";
 
 import { messages } from "./common";
 import { CONNECT_TIMEOUT, RECONNECT_DELAY } from "./client-config";
 
+
+function getParsedCommandLineArgs() {
+    return yargs
+        .describe("server-address", "Chat server address")
+        .alias("server-address", "a")
+        .string("server-address")
+        .demand("server-address")
+        .describe("port", "Chat server port")
+        .alias("port", "p")
+        .number("port")
+        .demand("port")
+        .describe("nickname", "Chat user nickname")
+        .alias("nickname", "n")
+        .string("nickname")
+        .demand("nickname")
+        .strict()
+        .check((argv) => {
+            if (!isInteger(argv.port) || argv.port < 1 || argv.port > 65535) {
+                throw("Invalid port number");
+            }
+            if (!isString(argv.nickname) || argv.nickname.length === 0) {
+                throw("Invalid or empty nickname");
+            }
+            if (!isString(argv["server-address"]) || argv["server-address"].length === 0) {
+                throw("Invalid or server address");
+            }
+            return true;
+        })
+        .argv;
+}
 
 function getSocketConnection(host, port) {
     return createSocketIO(
@@ -95,29 +125,12 @@ function connectReadlineToSocket(rl, socket) {
     rl.prompt();
 }
 
-function getCommandLineParser() {
-    return commandLineArgs([
-        { name: "server-address", alias: "a", type: String },
-        { name: "port", alias: "p", type: String },
-        { name: "nickname", alias: "n", type: String },
-    ]);
-}
-
 function initApp() {
-    const cli = getCommandLineParser();
-    const commandLineParams = cli.parse();
-
-    if (isEmpty(commandLineParams)) {
-        console.log(cli.getUsage());
-        process.exit(0);
-        return;
-    }
-
     const {
         "server-address": serverHost,
         port: serverPort,
         nickname,
-    } = commandLineParams;
+    } = getParsedCommandLineArgs();
 
     const socket = getSocketConnection(serverHost, serverPort);
     const rl = getReadline();
