@@ -2,6 +2,7 @@ import readline from "readline";
 import createSocketIO from "socket.io-client";
 
 import { messages } from "./common";
+import { CONNECT_TIMEOUT, RECONNECT_DELAY } from "./client-config";
 
 
 const serverPort = 13666;
@@ -11,8 +12,8 @@ const nickname = "andris";
 const socket = createSocketIO(
     `http://${serverHost}:${serverPort}`,
     {
-        reconnectionDelay: 3000,
-        reconnectionDelayMax: 5000,
+        reconnectionDelay: CONNECT_TIMEOUT,
+        reconnectionDelayMax: RECONNECT_DELAY,
     }
 );
 

@@ -1,10 +1,9 @@
 import createSocketIO from "socket.io";
 import { partial, some } from "lodash";
 
+import { IDLE_TIMEOUT } from "./server-config";
 import { messages } from "./common";
 
-
-const IDLE_TIMEOUT = 2000;
 
 function log(...logMessages) {
     console.log(Date.now(), ...logMessages);
