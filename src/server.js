@@ -3,7 +3,7 @@ import { partial, some, isInteger } from "lodash";
 import yargs from "yargs";
 
 import { IDLE_TIMEOUT } from "./server-config";
-import { messages } from "./common";
+import { messages, isUserMessageValid } from "./common";
 
 
 function log(...logMessages) {
@@ -88,11 +88,18 @@ function onUserMessage(ioServer, userSocket, user, data) {
     log(`Incoming message. ${user.nickname}: ${data.content}`);
     resetUserIdleTimeout(user, partial(onUserIdle, ioServer, userSocket, user));
 
+    const message = data.content;
+
+    if (!isUserMessageValid(message)) {
+        log(`Invalid user message. ${user.nickname}: ${data.content}`);
+        return;
+    }
+
     ioServer.emit(
         messages.USER_SENT_MESSAGE,
         {
             nickname: user.nickname,
-            content: data.content,
+            content: message,
         }
     );
 }

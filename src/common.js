@@ -1,3 +1,5 @@
+import { isString } from "lodash";
+
 
 export const messages = {
     // Client emitted events
@@ -10,3 +12,7 @@ export const messages = {
     USER_DISCONNECTED: "user-disconnected",
     NICKNAME_ALREADY_REGISTERED: "nickname-already-registered",
 };
+
+export function isUserMessageValid(message) {
+    return isString(message) && message.length > 0;
+}
