@@ -1,0 +1,22 @@
+{
+  "ecmaFeatures": {
+    "modules": false,
+    "experimentalObjectRestSpread": true
+  },
+  "env": {
+    "node": true,
+    "es6": true
+  },
+  "parser": "babel-eslint",
+  "rules": {
+    "indent": [2, 4, {"SwitchCase": 1}],
+    "quotes": [2, "double"],
+    "linebreak-style": [2, "unix"],
+    "semi": [2, "always"],
+    "strict": [2, "function"]
+  },
+  "extends": [
+    "eslint:recommended",
+    "airbnb/base"
+  ]
+}
