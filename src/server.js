@@ -1,7 +1,7 @@
 import createSocketIO from "socket.io";
 import { partial, some } from "lodash";
 
-import {messages} from "./common";
+import { messages } from "./common";
 
 
 const IDLE_TIMEOUT = 2000;
@@ -49,7 +49,10 @@ function removeUserData(userStorage, user) {
 
 
 function onUserDisconnect(ioServer, userStorage, user) {
-    log(`User ${user.nickname?`${user.nickname} `:""}disconnected${user.timedOut?" after timeout":""}`);
+    log(
+        `User ${user.nickname ? `${user.nickname} ` : ""}`
+        + `disconnected${user.timedOut ? " after timeout" : ""}`
+    );
     if (!user.timedOut) {
         ioServer.emit(messages.USER_DISCONNECTED, { nickname: user.nickname });
     }

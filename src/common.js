@@ -3,7 +3,6 @@ export const messages = {
     // Client emitted events
     SEND_MESSAGE: "send-message",
     JOIN: "join",
-    
     // Server emitted events
     USER_SENT_MESSAGE: "user-sent-message",
     USER_JOINED: "user-joined",

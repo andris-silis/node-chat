@@ -57,11 +57,11 @@ socket.on(messages.USER_JOINED, (data) => {
 });
 
 socket.on(messages.USER_TIMED_OUT, (data) => {
-    console.log(`User ${data.nickname} timed out`);    
+    console.log(`User ${data.nickname} timed out`);
 });
 
 socket.on(messages.USER_DISCONNECTED, (data) => {
-    console.log(`User ${data.nickname} disconnected`);    
+    console.log(`User ${data.nickname} disconnected`);
 });
 
 socket.on(messages.NICKNAME_ALREADY_REGISTERED, () => {
