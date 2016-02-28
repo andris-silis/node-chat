@@ -3,7 +3,7 @@ import createSocketIO from "socket.io-client";
 import yargs from "yargs";
 import { isInteger, isString } from "lodash";
 
-import { messages } from "./common";
+import { messages, isUserMessageValid } from "./common";
 import { CONNECT_TIMEOUT, RECONNECT_DELAY } from "./client-config";
 
 
@@ -118,7 +118,9 @@ function getReadline() {
 
 function connectReadlineToSocket(rl, socket) {
     rl.on("line", (content) => {
-        socket.emit(messages.SEND_MESSAGE, { content });
+        if (isUserMessageValid(content)) {
+            socket.emit(messages.SEND_MESSAGE, { content });
+        }
         rl.prompt();
     });
 
