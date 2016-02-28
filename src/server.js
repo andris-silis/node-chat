@@ -1,5 +1,6 @@
 import createSocketIO from "socket.io";
-import { partial, some } from "lodash";
+import { partial, some, isInteger } from "lodash";
+import yargs from "yargs";
 
 import { IDLE_TIMEOUT } from "./server-config";
 import { messages } from "./common";
@@ -7,6 +8,23 @@ import { messages } from "./common";
 
 function log(...logMessages) {
     console.log(Date.now(), ...logMessages);
+}
+
+
+function getParsedCommandLineArgs() {
+    return yargs
+        .describe("port", "Port number to listen")
+        .alias("port", "p")
+        .number("port")
+        .demand("port")
+        .strict()
+        .check((argv) => {
+            if (!isInteger(argv.port) || argv.port < 1 || argv.port > 65535) {
+                throw("Invalid port number");
+            }
+            return true;
+        })
+        .argv;
 }
 
 
@@ -108,12 +126,14 @@ function onUserConnection(ioServer, userStorage, userSocket) {
 
 
 function initApp() {
-    const port = 13666;
+    const { port } = getParsedCommandLineArgs();
     const userStorage = {};
 
     const io = createSocketIO();
     io.on("connection", partial(onUserConnection, io, userStorage));
     io.listen(port);
+
+    log(`Listening on port ${port}`);
 }
 
 
