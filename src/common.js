@@ -12,6 +12,7 @@ export const messages = {
     USER_DISCONNECTED: "user-disconnected",
     NICKNAME_ALREADY_REGISTERED: "nickname-already-registered",
     INVALID_NICKNAME: "invalid-nickname",
+    TIMED_OUT: "timed-out",
 };
 
 export function isUserMessageValid(message) {

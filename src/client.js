@@ -61,7 +61,7 @@ function connectToChatSocket(socket, nickname) {
     });
 
     socket.on("disconnect", () => {
-        console.log("Disconnect");
+        console.log("Disconnected");
         process.exit(0);
     });
 
@@ -104,6 +104,10 @@ function connectToChatSocket(socket, nickname) {
     socket.on(messages.INVALID_NICKNAME, () => {
         console.log("Invalid nickname. Change nickname parameter. Exiting..");
         process.exit(0);
+    });
+
+    socket.on(messages.TIMED_OUT, () => {
+        console.log("*** Server sent timed-out message");
     });
 }
 

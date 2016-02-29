@@ -81,8 +81,8 @@ function onUserDisconnect(ioServer, userStorage, user) {
 }
 
 function onUserIdle(ioServer, userSocket, user) {
-// return;
     user.timedOut = true;
+    userSocket.emit(messages.TIMED_OUT);
     userSocket.disconnect();
     ioServer.emit(messages.USER_TIMED_OUT, { nickname: user.nickname });
     log(`User ${user.nickname} timed out`);
