@@ -3,7 +3,7 @@ import { partial, some, isInteger, isString } from "lodash";
 import yargs from "yargs";
 
 import { IDLE_TIMEOUT } from "./server-config";
-import { messages, isUserMessageValid } from "./common";
+import { messages, isUserMessageValid, isNicknameValid } from "./common";
 
 
 function log(...logMessages) {
@@ -82,10 +82,10 @@ function onUserDisconnect(ioServer, userStorage, user) {
 
 function onUserIdle(ioServer, userSocket, user) {
 // return;
-    log(`User ${user.nickname} timed out`);
-    ioServer.emit(messages.USER_TIMED_OUT, { nickname: user.nickname });
     user.timedOut = true;
     userSocket.disconnect();
+    ioServer.emit(messages.USER_TIMED_OUT, { nickname: user.nickname });
+    log(`User ${user.nickname} timed out`);
 }
 
 function onUserMessage(ioServer, userSocket, user, data) {
@@ -96,6 +96,11 @@ function onUserMessage(ioServer, userSocket, user, data) {
 
     if (!isUserMessageValid(message)) {
         log(`Invalid user message. ${user.nickname}: ${data.content}`);
+        return;
+    }
+
+    if (!isNicknameValid(user.nickname)) {
+        log(`Invalid nickname: ${user.nickname}`);
         return;
     }
 
@@ -111,6 +116,11 @@ function onUserMessage(ioServer, userSocket, user, data) {
 function onUserJoin(ioServer, userStorage, userSocket, user, data) {
     if (isNicknameRegistered(userStorage, data.nickname)) {
         userSocket.emit(messages.NICKNAME_ALREADY_REGISTERED);
+        return;
+    }
+
+    if (!isNicknameValid(data.nickname)) {
+        userSocket.emit(messages.INVALID_NICKNAME);
         return;
     }
 

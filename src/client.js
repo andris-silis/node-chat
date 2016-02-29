@@ -100,6 +100,11 @@ function connectToChatSocket(socket, nickname) {
         console.log("Nickname already in use. Change nickname parameter. Exiting..");
         process.exit(0);
     });
+
+    socket.on(messages.INVALID_NICKNAME, () => {
+        console.log("Invalid nickname. Change nickname parameter. Exiting..");
+        process.exit(0);
+    });
 }
 
 function getReadline() {
@@ -121,10 +126,7 @@ function connectReadlineToSocket(rl, socket) {
         if (isUserMessageValid(content)) {
             socket.emit(messages.SEND_MESSAGE, { content });
         }
-        rl.prompt();
     });
-
-    rl.prompt();
 }
 
 function initApp() {
