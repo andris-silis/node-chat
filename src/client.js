@@ -49,15 +49,16 @@ function getSocketConnection(host, port) {
 
 function connectToChatSocket(socket, nickname) {
     socket.on("connect", () => {
+        console.log("Connected. Start chatting.");
         socket.emit(messages.JOIN, { nickname });
     });
 
     socket.on("connect_error", () => {
-        console.log("connect_error");
+        console.log("Connect error");
     });
 
     socket.on("connect_timeout", () => {
-        console.log("connect_timeout");
+        console.log("Connect timeout");
     });
 
     socket.on("disconnect", () => {
@@ -67,14 +68,6 @@ function connectToChatSocket(socket, nickname) {
 
     socket.on("reconnecting", (number) => {
         console.log("Reconnecting. Try", number);
-    });
-
-    socket.on("reconnect", (number) => {
-        console.log("Reconnected. Try", number);
-    });
-
-    socket.on("reconnect_error", () => {
-        console.log("reconnect_error");
     });
 
     socket.on(messages.USER_SENT_MESSAGE, (data) => {
