@@ -21,7 +21,7 @@ function getParsedCommandLineArgs() {
         .strict()
         .check((argv) => {
             if (!isInteger(argv.port) || argv.port < 1 || argv.port > 65535) {
-                throw("Invalid port number");
+                throw new Error("Invalid port number");
             }
             return true;
         })

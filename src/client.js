@@ -24,13 +24,13 @@ function getParsedCommandLineArgs() {
         .strict()
         .check((argv) => {
             if (!isInteger(argv.port) || argv.port < 1 || argv.port > 65535) {
-                throw("Invalid port number");
+                throw new Error("Invalid port number");
             }
             if (!isString(argv.nickname) || argv.nickname.length === 0) {
-                throw("Invalid or empty nickname");
+                throw new Error("Invalid or empty nickname");
             }
             if (!isString(argv["server-address"]) || argv["server-address"].length === 0) {
-                throw("Invalid or server address");
+                throw new Error("Invalid or server address");
             }
             return true;
         })

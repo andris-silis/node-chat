@@ -13,7 +13,9 @@
     "quotes": [2, "double"],
     "linebreak-style": [2, "unix"],
     "semi": [2, "always"],
-    "strict": [2, "function"]
+    "strict": [2, "function"],
+    "no-console": [0],
+    "no-param-reassign": [2, {"props": false}]
   },
   "extends": [
     "eslint:recommended",
