@@ -99,11 +99,6 @@ function onUserMessage(ioServer, userSocket, user, data) {
         return;
     }
 
-    if (!isNicknameValid(user.nickname)) {
-        log(`Invalid nickname: ${user.nickname}`);
-        return;
-    }
-
     ioServer.emit(
         messages.USER_SENT_MESSAGE,
         {
