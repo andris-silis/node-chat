@@ -114,6 +114,8 @@ function onUserMessage(ioServer, userSocket, user, data) {
 }
 
 function onUserJoin(ioServer, userStorage, userSocket, user, data) {
+    resetUserIdleTimeout(user, partial(onUserIdle, ioServer, userSocket, user));
+
     if (isNicknameRegistered(userStorage, data.nickname)) {
         userSocket.emit(messages.NICKNAME_ALREADY_REGISTERED);
         return;
@@ -139,6 +141,8 @@ function onUserConnection(ioServer, userStorage, userSocket) {
         userStorage,
         userSocket.conn.id
     );
+
+    setUserIdleTimeout(user, partial(onUserIdle, ioServer, userSocket, user));
 
     userSocket.on(messages.JOIN, partial(onUserJoin, ioServer, userStorage, userSocket, user));
     userSocket.on(messages.SEND_MESSAGE, partial(onUserMessage, ioServer, userSocket, user));
