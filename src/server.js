@@ -143,6 +143,16 @@ function onUserConnection(ioServer, userStorage, userSocket) {
     userSocket.on("disconnect", partial(onUserDisconnect, ioServer, userStorage, user));
 }
 
+function onTCPTimeout(socket) {
+    log("TCP connection timed out");
+    socket.end();
+}
+
+function onTCPConnection(socket) {
+    log("Incoming TCP connection");
+    socket.setTimeout(IDLE_TIMEOUT, partial(onTCPTimeout, socket));
+}
+
 
 function initApp() {
     const { port } = getParsedCommandLineArgs();
@@ -151,6 +161,7 @@ function initApp() {
     const io = createSocketIO();
     io.on("connection", partial(onUserConnection, io, userStorage));
     io.listen(port);
+    io.httpServer.on("connection", onTCPConnection);
 
     log(`Listening on port ${port}`);
 }
