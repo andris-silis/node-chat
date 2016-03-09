@@ -41,8 +41,8 @@ function getSocketConnection(host, port) {
     return createSocketIO(
         `http://${host}:${port}`,
         {
-            reconnectionDelay: CONNECT_TIMEOUT,
-            reconnectionDelayMax: RECONNECT_DELAY,
+            timeout: CONNECT_TIMEOUT,
+            reconnectionDelay: RECONNECT_DELAY,
         }
     );
 }
