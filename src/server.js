@@ -124,7 +124,6 @@ function onUserJoin(ioServer, userStorage, userSocket, user, data) {
     user.nickname = data.nickname;
 
     log(`User ${user.nickname} joined`);
-    setUserIdleTimeout(user, partial(onUserIdle, ioServer, userSocket, user));
     ioServer.emit(messages.USER_JOINED, { nickname: user.nickname });
 }
 
